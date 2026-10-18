@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="A fast, responsive, high-precision WebGL reaction timer game built with three.js and Web Audio API. Test your reflexes in milliseconds!">
+  <meta name="theme-color" content="#0F1117">
+  
+  <title>PulseReflex // 3D Reaction Timer Game</title>
+
+  <!-- Google Fonts: Space Grotesk & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Pinned Three.js via Import Map (No bundler or npm needed) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body data-state="idle">
+  <!-- Three.js Background Rendering Canvas -->
+  <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+
+  <!-- Full-screen Color State Wash Overlay -->
+  <div class="state-overlay" aria-hidden="true"></div>
+
+  <!-- Primary Interactive Game Surface -->
+  <main id="game-root" role="button" tabindex="0" aria-label="Reaction timer play area. Click or press Space to interact.">
+    <!-- Header: Navigation & Sound Settings -->
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">⚡</span>
+        <h1 class="brand-title">PulseReflex</h1>
+      </div>
+
+      <nav class="header-controls" aria-label="Game Options">
+        <button id="btn-mute" class="btn-control" type="button" aria-label="Toggle sound mute" title="Toggle audio (M)">
+          <span id="mute-icon" aria-hidden="true">🔊</span>
+          <span id="mute-label">Audio On</span>
+        </button>
+        <button id="btn-reset" class="btn-control" type="button" aria-label="Reset personal stats" title="Reset personal records">
+          <span aria-hidden="true">↺</span>
+          <span>Reset</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Center Stage: Dynamic Game State Area -->
+    <section class="main-stage" aria-live="assertive" aria-atomic="true">
+      <div class="card-stage" id="stage-card">
+        <!-- Dynamic State Icon / Glyphs -->
+        <div class="state-icon" id="stage-icon" aria-hidden="true">🎯</div>
+
+        <!-- New Personal Best Notification (Shown when PB is broken) -->
+        <div id="new-best-banner" class="new-best-banner" style="display: none;">
+          <span>🏆</span> NEW PERSONAL BEST!
+        </div>
+
+        <!-- Heading Text -->
+        <h2 class="state-title" id="stage-title">PulseReflex</h2>
+
+        <!-- Numerical Result Display (Active in Result State) -->
+        <div id="result-display" class="result-timer-wrap" style="display: none;">
+          <span class="result-timer" id="result-time-val">0</span>
+          <span class="result-ms">ms</span>
+        </div>
+
+        <!-- Reflex Tier Badge -->
+        <div id="result-tier-badge" class="result-badge" style="display: none;">
+          <span id="result-tier-icon">⚡</span>
+          <span id="result-tier-label">Esports Tier</span>
+        </div>
+
+        <!-- Descriptive instruction -->
+        <p class="state-desc" id="stage-desc">
+          Test your neural reaction speed with microsecond precision.
+        </p>
+
+        <!-- Contextual Action Prompt -->
+        <div class="action-cue" id="stage-action">
+          Click, tap, or press Space to start
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer: Statistical Performance Cards -->
+    <footer class="bottom-panel">
+      <div class="stats-grid">
+        <!-- Personal Best -->
+        <article class="stat-card">
+          <span class="stat-label">Personal Best</span>
+          <span class="stat-value" id="stat-pb">—</span>
+        </article>
+
+        <!-- Average of Last 5 Attempts -->
+        <article class="stat-card">
+          <span class="stat-label">Last 5 Average</span>
+          <span class="stat-value" id="stat-avg">—</span>
+        </article>
+
+        <!-- Recent Attempts History -->
+        <article class="stat-card">
+          <span class="stat-label">Recent Attempts</span>
+          <div class="stat-history-chips" id="stat-chips" aria-label="List of recent reaction times in milliseconds">
+            <span class="history-chip">—</span>
+          </div>
+        </article>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Application Entry Point (Vanilla ES Module) -->
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
